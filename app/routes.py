@@ -80,9 +80,9 @@ def panel():
         ).scalar() or 0
     }
 
-    ultimas = Solicitud.query.order_by(
-        Solicitud.fecha.desc()
-    ).limit(8).all()
+    ultimas = db.session.query(Solicitud).order_by(
+    Solicitud.fecha.desc()
+).limit(8).all()
 
     return render_template(
         'panel.html',

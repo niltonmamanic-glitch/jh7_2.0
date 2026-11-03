@@ -37,3 +37,4 @@ GROQ_BASE_URL = os.getenv(
     'GROQ_BASE_URL',
     'https://api.groq.com/openai/v1'
 )
+FAB_INDEX_VIEW = 'app.index.InicioJH7'
