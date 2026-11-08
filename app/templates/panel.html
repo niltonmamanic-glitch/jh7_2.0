@@ -1,1 +1,80 @@
-{% extends 'base_jh7.html' %}{% block title %}Panel · JH7 Telecom{% endblock %}{% block body %}<h1>Panel administrativo</h1><p>Sistema de Gestión de Servicios Técnicos</p><div class="cards stats"><article><b>{{ stats.solicitudes }}</b><span>Solicitudes</span></article><article><b>{{ stats.ordenes }}</b><span>Órdenes en proceso</span></article><article><b>{{ stats.pendientes }}</b><span>Trabajos pendientes</span></article><article><b>{{ stats.finalizados }}</b><span>Trabajos finalizados</span></article></div><h2>Operaciones del sistema</h2><div class="cards links"><a href="/clienteview/list/">Clientes</a><a href="/servicioview/list/">Servicios</a><a href="/tecnicoview/list/">Técnicos</a><a href="/solicitudview/list/">Solicitudes</a><a href="/ordentrabajoview/list/">Órdenes de trabajo</a><a href="/seguimientoview/list/">Seguimientos</a><a href="/reportes">Reportes</a><a href="/asistente">IA Diagnóstico</a><a href="/">Página principal</a></div><h2>Últimas solicitudes</h2><div class="tablewrap"><table><thead><tr><th>ID</th><th>Cliente</th><th>Servicio</th><th>Asunto</th><th>Prioridad</th><th>Estado</th></tr></thead><tbody>{% for s in ultimas %}<tr><td>#{{ s.id }}</td><td>{{ s.cliente.nombre }}</td><td>{{ s.servicio.nombre }}</td><td>{{ s.asunto }}</td><td>{{ s.prioridad }}</td><td>{{ s.estado }}</td></tr>{% else %}<tr><td colspan="6">No hay solicitudes registradas.</td></tr>{% endfor %}</tbody></table></div>{% endblock %}
+{% extends 'base_jh7.html' %}
+
+{% block title %}
+    Panel · JH7 Telecom
+{% endblock %}
+
+{% block body %}
+
+<h1 style="font-size: 25px; font-weight: 700; margin: 10px 0; line-height: 1.3;">
+    PANEL ADMINISTRATIVO
+</h1>
+
+    <p>Sistema de Gestión de Servicios Técnicos</p>
+
+
+    <!-- Resumen de las actividades del sistema -->
+    <div class="cards stats">
+
+        <article>
+            <b>{{ stats.solicitudes }}</b>
+            <span>Solicitudes</span>
+        </article>
+
+        <article>
+            <b>{{ stats.ordenes }}</b>
+            <span>Órdenes en proceso</span>
+        </article>
+
+        <article>
+            <b>{{ stats.pendientes }}</b>
+            <span>Trabajos pendientes</span>
+        </article>
+
+        <article>
+            <b>{{ stats.finalizados }}</b>
+            <span>Trabajos finalizados</span>
+        </article>
+
+    </div>
+
+
+    <!-- Accesos a los módulos del sistema -->
+    <h2>Operaciones del sistema</h2>
+
+    <div class="cards links">
+
+        <a href="/clienteview/list/">
+            Clientes
+        </a>
+
+        <a href="/servicioview/list/">
+            Servicios
+        </a>
+
+        <a href="/tecnicoview/list/">
+            Técnicos
+        </a>
+
+        <a href="/solicitudview/list/">
+            Solicitudes
+        </a>
+
+        <a href="/ordentrabajoview/list/">
+            Órdenes de trabajo
+        </a>
+
+        <a href="/seguimientoview/list/">
+            Seguimientos
+        </a>
+
+      
+
+       
+
+    </div>
+
+
+   
+
+{% endblock %}
