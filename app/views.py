@@ -21,6 +21,11 @@ class BaseJH7View(ModelView):
 
 # GESTION DE CLIENTES
 class ClienteView(BaseJH7View):
+
+    list_title = 'Lista de clientes'
+    add_title = 'Registrar cliente'
+    edit_title = 'Editar cliente'
+    show_title = 'Detalle del cliente'
     datamodel = SQLAInterface(Cliente)
 
     list_columns = [
@@ -58,7 +63,13 @@ class ClienteView(BaseJH7View):
 
 # GESTION DE SERVICIOS
 class ServicioView(BaseJH7View):
+
+    list_title = 'Lista de servicios'
+    add_title = 'Registrar servicio'
+    edit_title = 'Editar servicio'
+    show_title = 'Detalle del servicio'
     datamodel = SQLAInterface(Servicio)
+    
 
     list_columns = [
         'nombre',
@@ -77,6 +88,11 @@ class ServicioView(BaseJH7View):
 
 # GESTION DE TECNICOS
 class TecnicoView(BaseJH7View):
+
+    list_title = 'Lista de técnicos'
+    add_title = 'Registrar técnico'
+    edit_title = 'Editar técnico'
+    show_title = 'Detalle del técnico'
     datamodel = SQLAInterface(Tecnico)
 
     list_columns = [
@@ -237,6 +253,14 @@ class SeguimientoView(BaseJH7View):
 
 # REGISTRO DE LOS MODULOS
 def register_views(appbuilder):
+
+    # INICIO - PANEL ADMINISTRATIVO
+    appbuilder.add_link(
+        name='Inicio',
+        href='/panel',
+        icon='fa-home',
+        category='Gestión JH7'
+    )
 
     for view, name, icon in [
 

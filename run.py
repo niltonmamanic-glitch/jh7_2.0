@@ -35,7 +35,7 @@ def seed_demo():
     db.session.flush()
     db.session.add_all([Seguimiento(orden_id=o.id,observacion='Registro inicial de avance',estado_reportado=o.estado) for o in ordenes])
     db.session.commit()
-    click.echo('Datos DEMO creados. Son ficticios, reemplázalos para la defensa.')
+    click.echo('Datos DEMO creados. Son ficticios')
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1',port=8080,debug=True)
