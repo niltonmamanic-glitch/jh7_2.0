@@ -1,1 +1,233 @@
-{% extends 'base_jh7.html' %}{% block title %}IA Diagnóstico · JH7{% endblock %}{% block body %}<h1>IA – Diagnóstico técnico</h1><p>Consulta sobre fibra óptica, estaciones BTS, radio enlaces y planta externa. Se incluyen estadísticas reales agregadas de la base de datos, sin enviar datos personales.</p><div class="chat"><div id="chat" class="chatlog" aria-live="polite"><p class="bubble ia"><strong>Asistente:</strong> ¿En qué problema técnico puedo ayudarte?</p></div><form id="form-chat" class="chatinput"><input type="text" id="mensaje" maxlength="1500" placeholder="Describe el problema técnico..." required autocomplete="off"><button class="btn" id="enviar" type="submit">Enviar</button></form></div><script>const TOKEN={{ csrf_token()|tojson }}; const form=document.getElementById('form-chat');const input=document.getElementById('mensaje');const chat=document.getElementById('chat');const boton=document.getElementById('enviar');let historial=[];function mostrar(autor,texto,tipo){let p=document.createElement('p');p.className='bubble '+tipo;let b=document.createElement('strong');b.textContent=autor+': ';p.append(b,document.createTextNode(texto));chat.appendChild(p);chat.scrollTop=chat.scrollHeight;return p;}form.addEventListener('submit',async e=>{e.preventDefault();const mensaje=input.value.trim();if(!mensaje)return;mostrar('Tú',mensaje,'user');input.value='';boton.disabled=true;const esperando=mostrar('Asistente','Consultando...','ia');try{const response=await fetch('/api/asistente',{method:'POST',headers:{'Content-Type':'application/json','X-CSRFToken':TOKEN},body:JSON.stringify({mensaje,historial})});const data=await response.json();if(!response.ok)throw Error(data.error||'Error del servidor');esperando.remove();mostrar('Asistente',data.respuesta,'ia');historial.push({role:'user',content:mensaje},{role:'assistant',content:data.respuesta});historial=historial.slice(-8);}catch(err){esperando.remove();mostrar('Error',err.message,'error');}finally{boton.disabled=false;input.focus();}});</script>{% endblock %}
+{% extends 'base_jh7.html' %}
+
+{% block title %}IA Diagnóstico · JH7{% endblock %}
+
+{% block body %}
+
+<h1>IA – Diagnóstico técnico</h1>
+
+<p>
+    Consulta sobre fibra óptica, estaciones BTS, radioenlaces
+    y planta externa. Se incluyen estadísticas reales agregadas
+    de la base de datos, sin enviar datos personales.
+</p>
+
+<div class="chat">
+
+    <div id="chat" class="chatlog" aria-live="polite">
+        <p class="bubble ia">
+            <strong>Asistente:</strong>
+            ¿En qué problema técnico puedo ayudarte?
+        </p>
+    </div>
+
+    <form id="form-chat" class="chatinput">
+
+        <input
+            type="text"
+            id="mensaje"
+            maxlength="1500"
+            placeholder="Describe el problema técnico..."
+            required
+            autocomplete="off"
+        >
+
+        <button class="btn" id="enviar" type="submit">
+            Enviar
+        </button>
+
+    </form>
+
+</div>
+
+<script>
+
+const TOKEN = {{ csrf_token()|tojson }};
+
+const form = document.getElementById('form-chat');
+const input = document.getElementById('mensaje');
+const chat = document.getElementById('chat');
+const boton = document.getElementById('enviar');
+
+let historial = [];
+
+
+// Mostrar mensajes en pantalla
+function mostrar(autor, texto, tipo) {
+
+    const p = document.createElement('p');
+    p.className = 'bubble ' + tipo;
+
+    const b = document.createElement('strong');
+    b.textContent = autor + ': ';
+
+    p.append(b, document.createTextNode(texto));
+
+    chat.appendChild(p);
+
+    chat.scrollTop = chat.scrollHeight;
+
+    return p;
+}
+
+
+// Enviar mensaje a la inteligencia artificial
+form.addEventListener('submit', async function(e) {
+
+    e.preventDefault();
+
+    const mensaje = input.value.trim();
+
+    if (!mensaje) return;
+
+    mostrar('Tú', mensaje, 'user');
+
+    input.value = '';
+
+    boton.disabled = true;
+
+    const esperando = mostrar(
+        'Asistente',
+        'Consultando inteligencia artificial...',
+        'ia'
+    );
+
+    try {
+
+        const response = await fetch('/api/asistente', {
+
+            method: 'POST',
+
+            credentials: 'same-origin',
+
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': TOKEN,
+                'Accept': 'application/json'
+            },
+
+            body: JSON.stringify({
+                mensaje: mensaje,
+                historial: historial
+            })
+
+        });
+
+
+        // Detectar redirección al inicio de sesión
+        if (response.redirected) {
+
+            throw new Error(
+                'Tu sesión no está autenticada o ha vencido. ' +
+                'Vuelve a iniciar sesión en JH7.'
+            );
+
+        }
+
+
+        // Obtener respuesta del servidor
+        const texto = await response.text();
+
+        const contentType =
+            response.headers.get('content-type') || '';
+
+
+        // Comprobar que el servidor devuelve JSON
+        if (!contentType.includes('application/json')) {
+
+            throw new Error(
+                'El servidor devolvió una página HTML en lugar de JSON. ' +
+                'Código HTTP: ' + response.status +
+                '. Revisa la ruta /api/asistente y la autenticación.'
+            );
+
+        }
+
+
+        // Convertir respuesta JSON
+        let data;
+
+        try {
+
+            data = JSON.parse(texto);
+
+        } catch (error) {
+
+            throw new Error(
+                'La respuesta del servidor contiene JSON inválido.'
+            );
+
+        }
+
+
+        // Comprobar errores HTTP
+        if (!response.ok) {
+
+            throw new Error(
+                data.error || 'Error del servidor: ' + response.status
+            );
+
+        }
+
+
+        // Comprobar respuesta de IA
+        if (!data.respuesta) {
+
+            throw new Error(
+                'La inteligencia artificial no devolvió una respuesta.'
+            );
+
+        }
+
+
+        // Mostrar respuesta
+        esperando.remove();
+
+        mostrar(
+            'Asistente',
+            data.respuesta,
+            'ia'
+        );
+
+
+        // Guardar historial
+        historial.push(
+            {
+                role: 'user',
+                content: mensaje
+            },
+            {
+                role: 'assistant',
+                content: data.respuesta
+            }
+        );
+
+        historial = historial.slice(-8);
+
+
+    } catch (err) {
+
+        esperando.remove();
+
+        mostrar(
+            'Error',
+            err.message,
+            'error'
+        );
+
+        console.error('Error en el asistente JH7:', err);
+
+
+    } finally {
+
+        boton.disabled = false;
+
+        input.focus();
+
+    }
+
+});
+
+</script>
+
+{% endblock %}

@@ -1,1 +1,68 @@
-{% extends 'base_jh7.html' %}{% block body %}<section class="hero"><div><p class="kicker">JH7 SRL TELECOM</p><h1>Conectamos personas,<br> acercamos soluciones</h1><p>Gestión de servicios técnicos de fibra óptica, radio bases, radio enlaces y planta externa.</p><a class="btn" href="/login/">Ingresar al sistema</a></div><div class="illustration"><span>⌁</span><strong>Telecomunicaciones</strong><p>Redes · Soporte · Servicios</p></div></section><h2>Nuestros servicios</h2><div class="cards"><article><b>◉ Fibra Óptica</b><p>Instalación y mantenimiento FTTH.</p></article><article><b>⌁ Radio Bases</b><p>Mantenimiento de estaciones BTS.</p></article><article><b>⚯ Radio Enlaces</b><p>Configuración de enlaces inalámbricos.</p></article><article><b>⚙ Planta Externa</b><p>Despliegue y mantenimiento de redes.</p></article></div><p class="note">Para la demostración académica, las solicitudes se administran desde el panel con acceso autorizado.</p>{% endblock %}
+{% extends 'base_jh7.html' %}
+
+{% block body %}
+
+<section class="hero">
+
+    <div>
+        <p class="kicker">JH7 SRL TELECOM</p>
+
+        <h1>
+            Conectamos personas,<br>
+            acercamos soluciones
+        </h1>
+
+        <p>
+            Gestión de servicios técnicos de fibra óptica,
+            radio bases, radio enlaces y planta externa.
+        </p>
+
+        <a class="btn"
+           href="{{ url_for('jh7.panel') if current_user.is_authenticated else '/login/' }}">
+            Ingresar al sistema
+        </a>
+        <a class="btn" href="{{ url_for('jh7.asistente') }}">
+            IA Diagnóstico técnico
+        </a>
+    </div>
+
+    <div class="illustration">
+        <span>⌁</span>
+        <strong>Telecomunicaciones</strong>
+        <p>Redes · Soporte · Servicios</p>
+    </div>
+
+</section>
+
+<h2>Nuestros servicios</h2>
+
+<div class="cards">
+
+    <article>
+        <b>◉ Fibra Óptica</b>
+        <p>Instalación y mantenimiento FTTH.</p>
+    </article>
+
+    <article>
+        <b>⌁ Radio Bases</b>
+        <p>Mantenimiento de estaciones BTS.</p>
+    </article>
+
+    <article>
+        <b>⚯ Radio Enlaces</b>
+        <p>Configuración de enlaces inalámbricos.</p>
+    </article>
+
+    <article>
+        <b>⚙ Planta Externa</b>
+        <p>Despliegue y mantenimiento de redes.</p>
+    </article>
+
+</div>
+
+<p class="note">
+    Para la demostración académica, las solicitudes
+    se administran desde el panel con acceso autorizado.
+</p>
+
+{% endblock %}

@@ -225,20 +225,14 @@ def reportes():
 
 # Pagina del asistente
 @bp.route('/asistente')
-@login_required
 def asistente():
-    if not is_authorized():
-        return 'Acceso no autorizado', 403
-
     return render_template('asistente.html')
 
 
 # Asistente de inteligencia artificial
 @bp.route('/api/asistente', methods=['POST'])
-@login_required
 def api_asistente():
-    if not is_authorized():
-        return blocked()
+    
 
     datos = request.get_json(silent=True) or {}
     mensaje = datos.get('mensaje', '')
