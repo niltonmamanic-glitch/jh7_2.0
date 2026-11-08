@@ -117,6 +117,11 @@ class TecnicoView(BaseJH7View):
 
 # GESTION DE SOLICITUDES
 class SolicitudView(BaseJH7View):
+
+    list_title = 'Lista de solicitudes'
+    add_title = 'Registrar solicitud'
+    edit_title = 'Editar solicitud'
+    show_title = 'Detalle de la solicitud'
     datamodel = SQLAInterface(Solicitud)
 
     list_columns = [
@@ -166,6 +171,11 @@ class SolicitudView(BaseJH7View):
 
 # GESTION DE ORDENES DE TRABAJO
 class OrdenTrabajoView(BaseJH7View):
+
+    list_title = 'Lista de órdenes de trabajo'
+    add_title = 'Registrar orden de trabajo'
+    edit_title = 'Editar orden de trabajo'
+    show_title = 'Detalle de la orden de trabajo'
     datamodel = SQLAInterface(OrdenTrabajo)
 
     list_columns = [
@@ -230,6 +240,11 @@ class OrdenTrabajoView(BaseJH7View):
 
 # GESTION DE SEGUIMIENTOS
 class SeguimientoView(BaseJH7View):
+
+    list_title = 'Lista de seguimientos'
+    add_title = 'Registrar seguimiento'
+    edit_title = 'Editar seguimiento'
+    show_title = 'Detalle del seguimiento'
     datamodel = SQLAInterface(Seguimiento)
 
     list_columns = [
